@@ -1,0 +1,33 @@
+version: "3.5"
+
+services:
+  mysql-db:
+    image: mysql:5
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: test123
+      MYSQL_DATABASE: definitions
+    container_name: dashboard-mysql
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -ptest123 -e 'select 1'"]
+      interval: 5s
+      retries: 50
+
+
+  fake-api:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./smoke-test:/smoke-tests
+    ports:
+      - 80:80
+      - 443:443
+
+
+#  demo-api:
+#    image: anaplan/dashboard:latest
+#    ports:
+#      - 8080:80
