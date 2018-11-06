@@ -3,6 +3,8 @@ version: "3.5"
 services:
   mysql-db:
     image: mysql:5
+    networks: 
+      - docs_document_network    
     ports:
       - 3306:3306
     environment:
@@ -19,15 +21,24 @@ services:
 
   fake-api:
     image: nginx:latest
+    container_name: dashboard-dummyAPI
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./smoke-test:/smoke-tests
     ports:
-      - 80:80
+      - 8080:80
       - 443:443
 
 
 #  demo-api:
-#    image: anaplan/dashboard:latest
+#    image: stuartalanmelville/dashboard:latest
+#    container_name: dashboardAPI
+#    networks: 
+#      - docs_document_network
 #    ports:
 #      - 8080:80
+ 
+
+networks:
+  docs_document_network:
+    name: document_network
