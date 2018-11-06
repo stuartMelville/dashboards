@@ -1,0 +1,40 @@
+{"title":"Sales targets"}
+{"title":"Regional updates"}
+{"title":"Odd bits and bobs"}
+{"title":"Some awful report"}
+{"title":"Really great dashboard"}
+
+export DOCKER_HOST=tcp://0.0.0.0:2375
+cd /mnt/c/Users/stuar/git/dashboards/
+
+sudo apt-get updates
+sudo apt-get install jq
+sudo apt-get install docker-compose
+sudo apt-get install docker.io
+
+
+docker-compose up --force-recreate -dashboard
+docker-compose down
+
+docker exec -it <container> bash
+docker run -it bash
+
+docker run --name dashboardRestAPI  -e MYSQL_HOST='dashboard-mysql' --link dashboard-mysql:mysql -p 8080:8080 --net document_network stuartalanmelville/dashboard
+docker stop dashboardRestAPI
+docker rm dashboardRestAPI
+
+docker ps
+
+docker image list
+docker rmi <image>
+
+docker inspect <container>
+
+docker network ls
+
+docker save stuartalanmelville/dashboard >dashboard.tar
+docker load --input dashboard.tar
+
+
+
+mvn  clean install dockerfile:build

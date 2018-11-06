@@ -3,8 +3,8 @@ version: "3.5"
 services:
   mysql-db:
     image: mysql:5
-    networks: 
-      - docs_document_network    
+#    networks: 
+#      - docs_document_network    
     ports:
       - 3306:3306
     environment:
@@ -30,15 +30,17 @@ services:
       - 443:443
 
 
-#  demo-api:
-#    image: stuartalanmelville/dashboard:latest
-#    container_name: dashboardAPI
+  demo-api:
+    image: stuartalanmelville/dashboard:latest
+    container_name: dashboardAPI
+    environment:
+      MYSQL_HOST: dashboard-mysql
 #    networks: 
 #      - docs_document_network
-#    ports:
-#      - 8080:80
+    ports:
+      - 80:80
  
 
-networks:
-  docs_document_network:
-    name: document_network
+#networks:
+#  docs_document_network:
+#    name: document_network
