@@ -10,9 +10,9 @@ public class DashboardsApplication {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println("Waiting");
+			System.out.println("Waiting for the dB");
 			Thread.sleep(5000);
-			System.out.println("Starting");
+			System.out.println("Starting the dashboard API");
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
