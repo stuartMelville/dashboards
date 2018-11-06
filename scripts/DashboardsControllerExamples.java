@@ -1,8 +1,8 @@
-package com.anaplan.dashboards.controller;
+package com.anaplan.dashboards.controllers;
 
-import com.anaplan.dashboards.exception.ResourceNotFoundException;
-import com.anaplan.dashboards.model.Dashboard;
-import com.anaplan.dashboards.repository.DashboardsRepository;
+import com.anaplan.dashboards.exceptions.ResourceNotFoundException;
+import com.anaplan.dashboards.models.Dashboard;
+import com.anaplan.dashboards.repositories.DashboardsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,15 +41,27 @@ public class DashboardsController {
     }
 
     // Search Dashboards by title 
-    @GetMapping("/dashboards/title/{title}")
+    @GetMapping("/dashboards/search")
+    public List<Dashboard> searchDashboards(@RequestParam(value = "title", defaultValue = "") String dashboardTitle,
+    										@RequestParam(value = "date", defaultValue = "") String createdDate) {
+    	List<Dashboard> dashboards = dashboardsRepository.findAll();
+    	return	dashboards.stream()
+    			.filter(dashboard -> dashboard.getTitle().contains(dashboardTitle))
+    			.filter(dashboard -> dashboard.getCreatedAt().toString().contains(createdDate))
+    			.collect(Collectors.toList());
+    }
+    
+    // Search Dashboards by title 
+    @GetMapping("/dashboards/search/{title}")
     public List<Dashboard> getDashboardByTitle(@PathVariable(value = "title") String dashboardTitle) {
     	List<Dashboard> dashboards = dashboardsRepository.findAll();
     	return	dashboards.stream()
     			.filter(dashboard -> dashboard.getTitle().contains(dashboardTitle))
     			.collect(Collectors.toList());
     }
-    // Search Dashboards by month 
-    @GetMapping("/dashboards/date/{createddate}")
+    
+    // Search Dashboards by matching dateString 
+    @GetMapping("/dashboards/search/{createddate}")
     public List<Dashboard> getDashboardByCreatedDate(@PathVariable(value = "createddate") String createdDate) {
     	List<Dashboard> dashboards = dashboardsRepository.findAll();
     	return	dashboards.stream()
@@ -65,9 +77,7 @@ public class DashboardsController {
 
         Dashboard dashboard = dashboardsRepository.findById(dashboardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Dashboard", "id", dashboardId));
-
         dashboard.setTitle(dashboardDetails.getTitle());
-
         Dashboard updatedDashboard = dashboardsRepository.save(dashboard);
         return updatedDashboard;
     }
