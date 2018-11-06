@@ -19,7 +19,7 @@ docker-compose down
 docker exec -it <container> bash
 docker run -it bash
 
-docker run --name dashboardRestAPI  -e MYSQL_HOST='dashboard-mysql' --link dashboard-mysql:mysql -p 8080:8080 --net document_network stuartalanmelville/dashboard
+docker run --name dashboardRestAPI  -e MYSQL_HOST='dashboard-mysql' --link dashboard-mysql:mysql -p 80:80 --net document_network stuartalanmelville/dashboard
 docker stop dashboardRestAPI
 docker rm dashboardRestAPI
 
@@ -35,6 +35,7 @@ docker network ls
 docker save stuartalanmelville/dashboard >dashboard.tar
 docker load --input dashboard.tar
 
-
+docker login --username=stuartalanmelville
+docker push stuartalanmelville/dashboard
 
 mvn  clean install dockerfile:build
